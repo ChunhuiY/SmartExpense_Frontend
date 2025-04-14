@@ -1,23 +1,30 @@
 
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import LoginPage from './pages/LoginPage.jsx';
-import DashboardPage from './pages/DashboardPage.jsx';
-import WalletPage from './pages/WalletPage.jsx';
-import BudgetPage from './pages/BudgetPage.jsx';
-import TransactionPage from './pages/TransactionPage.jsx';
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Sidebar from './components/Sidebar'
+import Dashboard from './components/Dashboard'
+import LoginPage from './pages/LoginPage'
+import TransactionsPage from './pages/TransactionsPage'
+import IncomesPage from './pages/IncomesPage'
+import ExpensesPage from './pages/ExpensesPage'
+import BudgetsPage from './pages/BudgetsPage'
+import WalletsPage from './pages/WalletsPage'
 
-function App() {
+export default function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/wallets" element={<WalletPage />} />
-        <Route path="/budgets" element={<BudgetPage />} />
-        <Route path="/transactions" element={<TransactionPage />} />
-      </Routes>
+      <div style={{ display: 'flex' }}>
+        <Sidebar />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/transactions" element={<TransactionsPage />} />
+          <Route path="/incomes" element={<IncomesPage />} />
+          <Route path="/expenses" element={<ExpensesPage />} />
+          <Route path="/budgets" element={<BudgetsPage />} />
+          <Route path="/wallets" element={<WalletsPage />} />
+        </Routes>
+      </div>
     </Router>
-  );
+  )
 }
-export default App;
