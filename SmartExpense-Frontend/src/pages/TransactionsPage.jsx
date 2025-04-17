@@ -1,29 +1,37 @@
-
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import './TransactionsPage.css';
+import axios from 'axios';
 
 export default function TransactionsPage() {
-  const data = [
-    { id: 1, type: 'Income', amount: 5000, note: 'Salary' },
-    { id: 2, type: 'Expense', amount: 50, note: 'Groceries' },
-  ]
+  const [transactions, setTransactions] = useState([]);
+
+  const fetchTransactions = async () => {
+    const res = await axios.get('http://localhost:8080/api/transaction');
+    setTransactions(res.data);
+  };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
+
   return (
-    <div style={{ padding: '30px' }}>
-      <h2>Transactions</h2>
-      <table>
-        <thead>
-          <tr><th>ID</th><th>Type</th><th>Amount</th><th>Note</th></tr>
-        </thead>
-        <tbody>
-          {data.map(tx => (
-            <tr key={tx.id}>
-              <td>{tx.id}</td>
-              <td>{tx.type}</td>
-              <td>${tx.amount}</td>
-              <td>{tx.note}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="transactions-page">
+      <h1 className="page-title">All Transactions</h1>
+
+      <div className="transactions-section">
+        {transactions.length === 0 ? (
+          <p className="empty-note">No transaction records yet.</p>
+        ) : (
+          transactions.map((item) => (
+            <div className="item-card" key={item.id}>
+              <div>
+                <b>{item.title}</b> | ${item.amount} | {item.date}
+                <div className="note-text">{item.description}</div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
-  )
+  );
 }

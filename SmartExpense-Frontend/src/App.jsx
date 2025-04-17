@@ -1,6 +1,5 @@
 
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Sidebar from './components/Sidebar'
 import Dashboard from './components/Dashboard'
 import LoginPage from './pages/LoginPage'
@@ -11,20 +10,28 @@ import BudgetsPage from './pages/BudgetsPage'
 import WalletsPage from './pages/WalletsPage'
 
 export default function App() {
+  const isLoggedIn = true // TODO: Replace with real auth logic
+
   return (
     <Router>
-      <div style={{ display: 'flex' }}>
-        <Sidebar />
+      {isLoggedIn ? (
+        <div style={{ display: 'flex' }}>
+          <Sidebar />
+          <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/transactions" element={<TransactionsPage />} />
+            <Route path="/incomes" element={<IncomesPage />} />
+            <Route path="/expenses" element={<ExpensesPage />} />
+            <Route path="/budgets" element={<BudgetsPage />} />
+            <Route path="/wallets" element={<WalletsPage />} />
+          </Routes>
+        </div>
+      ) : (
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/transactions" element={<TransactionsPage />} />
-          <Route path="/incomes" element={<IncomesPage />} />
-          <Route path="/expenses" element={<ExpensesPage />} />
-          <Route path="/budgets" element={<BudgetsPage />} />
-          <Route path="/wallets" element={<WalletsPage />} />
+          <Route path="*" element={<LoginPage />} />
         </Routes>
-      </div>
+      )}
     </Router>
   )
 }
